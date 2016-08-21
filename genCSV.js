@@ -4,19 +4,29 @@ var json2csv = require('json2csv');
 var getData = require('./getData.js');
 var fields = ['zpid', 'links', 'address', 'finishedSqFt', 'bathrooms', 'bedrooms', 'zestimate', 'localRealEstate'];
 
+var dataAdapter = function(data) {
+  data = data['SearchResults:searchresults'].response[0].results[0].result;
+  data = JSON.stringify(data);
+  data = data.replace(/[\[\]]+/g, '');
+  data = '[' + data + ']';
+  data = JSON.parse(data);
+
+  return data;
+};
+
 getData('1190 Mission St', 'San Francisco', 'CA').then(function(data) {
   parseString(data, function (err, res) {
-    res = res['SearchResults:searchresults'].response[0].results[0].result;
-    res = JSON.stringify(res);
-    res = res.replace(/[\[\]]+/g, '');
-    res = '[' + res + ']';
-    res = JSON.parse(res);
-    console.log(res);
-    var csv = json2csv({ data: res, fields: fields }); 
-    fs.writeFile('result.csv', csv, function(err) {
-      if (err) { throw err; }
-      console.log('file saved');
-    });
+    if (err) {
+      console.error(err);
+    } else {
+      res = dataAdapter(res);
+      console.log(res);
+      var csv = json2csv({ data: res, fields: fields }); 
+      fs.writeFile('result.csv', csv, function(err) {
+        if (err) { throw err; }
+        console.log('file saved');
+      });
+    }
   });
 });
 

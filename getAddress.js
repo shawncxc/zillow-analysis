@@ -1,6 +1,6 @@
 var request = require('request-promise');
 var co = require('co');
-var config = require('./config.js');
+var config = require('./config.json');
 
 var options = {
   uri: config.streets_link,

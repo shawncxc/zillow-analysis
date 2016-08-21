@@ -1,6 +1,6 @@
 var request = require('request-promise');
 var urlencode = require('urlencode');
-var config = require('./config.js');
+var config = require('./config.json');
 var getAddress = require('./getAddress.js');
 
 function getData(address, city, state) {
