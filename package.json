@@ -1,0 +1,19 @@
+{
+  "name": "zillow-analysis",
+  "version": "1.0.0",
+  "description": "Real estate analysis based on zillow api",
+  "main": "get_data.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "xuchangchen",
+  "license": "ISC",
+  "dependencies": {
+    "co": "^4.6.0",
+    "json2csv": "^3.6.3",
+    "request": "^2.74.0",
+    "request-promise": "^4.1.1",
+    "urlencode": "^1.1.0",
+    "xml2js": "^0.4.17"
+  }
+}
