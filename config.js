@@ -1,4 +1,4 @@
-var zws_id = 'X1-ZWz1febdj6zu2z_axb7v';
+var zws_id = require('./config.json').zws_id;
 var streets_link = 'http://data.sfgov.org/resource/fuen-w6ja.json';
 var zillow = 'http://www.zillow.com';
 
