@@ -28,10 +28,10 @@ That's it!
 
 Question: Should I use one standard deviation (sd) method or quantile segmentation (qs)?
 
----------   overvalued ----------- average ----------- undervalued 
+---------------   overvalued ---------------- average ----------------------- undervalued 
    
-1 sd:  -----   > +1sd  ------   -1sd<= x <= +1sd   ------     < -1sd 
+1 sd:  ----- > +1sd(> 84%)  ------   -1sd<= x <= +1sd(16% - 84%)   -------     < -1sd(< 16%)
 
-qs: -----   1st quantile  ----   2nd & 3r quantile  ---- 4thquantile
+qs: -----   4th quantile(> 75%)  ----   2nd & 3rd quantile(25% - 75%) -----1st quantile(< 25%)
 
 Actually, this demo performs exploratory data analysis.
