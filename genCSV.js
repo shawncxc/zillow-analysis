@@ -14,20 +14,22 @@ var dataAdapter = function(data) {
   return data;
 };
 
-getData('1190 Mission St', 'San Francisco', 'CA').then(function(data) {
-  parseString(data, function (err, res) {
-    if (err) {
-      console.error(err);
-    } else {
-      res = dataAdapter(res);
-      console.log(res);
-      var csv = json2csv({ data: res, fields: fields }); 
-      fs.writeFile('result.csv', csv, function(err) {
-        if (err) { throw err; }
-        console.log('file saved');
-      });
-    }
+function genCSV(address, city, state) {
+  getData(address, city, state).then(function(data) {
+    parseString(data, function (err, res) {
+      if (err) {
+        console.error(err);
+      } else {
+        res = dataAdapter(res);
+        console.log(res);
+        var csv = json2csv({ data: res, fields: fields }); 
+        fs.writeFile('result.csv', csv, function(err) {
+          if (err) { throw err; }
+          console.log('file saved');
+        });
+      }
+    });
   });
-});
+}
 
-
+module.exports = genCSV;
