@@ -36,3 +36,5 @@ Question: Should I use one standard deviation (sd) method or quantile segmentati
 qs: -----   4th quantile(> 75%)  ----   2nd & 3rd quantile(25% - 75%) -----1st quantile(< 25%)
 
 Actually, this demo performs exploratory data analysis.
+
+I prefer the qs method for this demo, because it is more interpretable.
