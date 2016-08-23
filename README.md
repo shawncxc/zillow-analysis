@@ -25,6 +25,7 @@ That's it!
 ## First Demo (House Prices Visualization in San Francisco):
 * normalize the data, get the overall summary
 * group the data by three catergories:  overvalued, average, undervalued
+* use Leaflet library for interactive maps
 
 Question: Should I use one standard deviation (sd) method or quantile segmentation (qs)?
 
