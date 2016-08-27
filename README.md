@@ -15,10 +15,12 @@
 
 ## Get the data
 
-* npm install
-* get yourself a zillow api token
-* set up the config.json which contains the zillow api token
+* Npm install
+* Get yourself a zillow api token
+* Set up the config.json which contains the zillow api token
 * `node zillow-get -a "ADDRESS" -c "CITY" -s "STATE" -f "IF_YOU_WANT_CSV"`
+* To get all the real property in one area: `node getAllRealProperty.js`
+* But remember zillow has a limit for 1000 request per day
 
 That's it! 
 
