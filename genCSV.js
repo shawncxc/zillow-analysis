@@ -11,6 +11,7 @@ var fields = [
 ];
 
 function genCSV(address, city, state, genCSV) {
+  console.log(address, city, state, genCSV);
   setTimeout(function () {
     getData(address, city, state).then(function(data) {
       parseString(data, function (err, res) {
@@ -20,12 +21,12 @@ function genCSV(address, city, state, genCSV) {
           res = dataAdapter(res);
           if (!res) {
             console.log('No Results.');
-            return; 
+            throw new Error(); 
           } else {
             console.log('Results: ', res);
           }
           if (genCSV) {
-            var csv = json2csv({ data: res, fields: fields }); 
+            var csv = json2csv({ data: res, fields: fields });
             fs.writeFile('result.csv', csv, { flag: 'a' }, function(err) {
               if (err) { throw err; }
               console.log('file saved');
