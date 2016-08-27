@@ -18,16 +18,16 @@ function genCSV(address, city, state, genCSV) {
         if (err) {
           console.error(err);
         } else {
-          res = dataAdapter(res);
           if (!res) {
             console.log('No Results.');
-            throw new Error(); 
+            throw new Error('no result for this address'); 
           } else {
+            res = dataAdapter(res);
             console.log('Results: ', res);
           }
           if (genCSV) {
             var csv = json2csv({ data: res, fields: fields });
-            fs.writeFile('result.csv', csv, { flag: 'a' }, function(err) {
+            fs.writeFile('realproperties.csv', csv, { flag: 'a' }, function(err) {
               if (err) { throw err; }
               console.log('file saved');
             });
