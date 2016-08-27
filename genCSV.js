@@ -20,12 +20,12 @@ function genCSV(address, city, state, genCSV) {
         } else {
           if (!res) {
             console.log('No Results.');
-            throw new Error('no result for this address'); 
+            throw new Error('no result for this address');
           } else {
             res = dataAdapter(res);
             console.log('Results: ', res);
           }
-          if (genCSV) {
+          if (genCSV && res) {
             var csv = json2csv({ data: res, fields: fields });
             fs.writeFile('realproperties.csv', csv, { flag: 'a' }, function(err) {
               if (err) { throw err; }
