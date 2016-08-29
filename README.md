@@ -42,7 +42,7 @@ That's it!
 
 
 ## Data Analysis 
-#### House Prices Visualization in San Francisco
+#### House Prices Visualization in San Francisco(SF)
 
 * Normalize the data, get the overall summary
 * Group the data by three catergories:  overvalued, average, undervalued
@@ -64,7 +64,7 @@ I would prefer the qs method for this demo, because it is more interpretable.
 https://xuanzhou.shinyapps.io/Real_Estate_Demo/
 
 ####Realized 
-* Visulize a part of house prices in San Francisco(SF)
+* Visulize a part of house prices in SF
 * Categorize data to three parts
 * Visulize data for each part
 
