@@ -64,10 +64,10 @@ I would prefer the qs method for this demo, because it is more interpretable.
 https://xuanzhou.shinyapps.io/Real_Estate_Demo/
 
 ####Realized 
-* Visulize a part of house price in San Francisco(SF)
+* Visulize a part of house prices in San Francisco(SF)
 * Categorize data to three parts
 * Visulize data for each part
 
 ####Pending 
 * Add legend on each graph
-* Add summary table on the data
+* Add summary tables on the data
