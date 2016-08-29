@@ -59,3 +59,15 @@ Should I use one standard deviation (sd) method or quantile segmentation (qs)?
 
 This demo performs exploratory data analysis.
 I would prefer the qs method for this demo, because it is more interpretable.
+
+####Link of the First Demo in Shiny:
+https://xuanzhou.shinyapps.io/Real_Estate_Demo/
+
+####Realized 
+* Visulize a part of house price in SF
+* Categorize data to three parts
+* Visulize data for each part
+
+####Pending 
+* Add legend on each graph
+* Add summary table on the data
