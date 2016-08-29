@@ -72,21 +72,6 @@ shinyServer(function(input, output) {
     })
     
     
-    # Output the summary of barplot data
-    # output$summary <- renderPrint({
-    #   
-    #   if(input$City == "San Francisco")
-    #   {
-    #     summary(overvalued$price);
-    #     summary(average$price);    # cannot display
-    #     summary(undervalued$price) # cannot display
-    #     
-    #   }
-    #   
-    # })
-    
-    
-    
     # Output the categorical map
     output$categoricalMap <- renderLeaflet({
 
@@ -101,15 +86,6 @@ shinyServer(function(input, output) {
                      weight = 1, radius = 3, color = "dimgrey")%>%
           addCircles(data=undervalued, lng = ~lon, lat = ~lat, 
                      weight = 1, radius = 3, color = "blue")
-          # Add lengend
-          # addLegend(data = data_sf, position = "bottomright", 
-          #           colors = c("dimgrey", "red", "green"),
-          #           labels = ,
-          #           title = "Price Distribution",
-          #           labFormat = labelFormat(prefix = "$"),
-          #           opacity = 1)
-          ###
-          
 
       }
       
