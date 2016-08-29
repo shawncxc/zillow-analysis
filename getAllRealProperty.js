@@ -15,17 +15,25 @@ var options = {
   json: true,
 };
 
-request(options).then(res => {
-  return res.map(x => x.fullstreetname);
-}).then(streets => {
-  streets.forEach(street => {
-    for (var i = 1; i < 10; i++) {
-      var addr = i + ' ' + street;
-      try {
-        genCSV(addr, 'San Francisco', 'CA', true);
-      } catch (err) {
-        break;
+module.exports = function(startFrom) {
+  request(options).then(res => {
+    return res.map(x => x.fullstreetname);
+  }).then(streets => {
+    var activate = false;
+    streets.forEach(street => {
+      if (street === startFrom || startFrom === 'all') {
+        activate = true;
       }
-    }
+      if (activate) {
+        for (var i = 1; i < 10; i++) {
+          var addr = i + ' ' + street;
+          try {
+            genCSV(addr, 'San Francisco', 'CA', true);
+          } catch (err) {
+            break;
+          }
+        }
+      }
+    });
   });
-});
+};
