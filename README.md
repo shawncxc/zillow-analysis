@@ -64,7 +64,7 @@ I would prefer the qs method for this demo, because it is more interpretable.
 https://xuanzhou.shinyapps.io/Real_Estate_Demo/
 
 ####Realized 
-* Visulize a part of house price in SF
+* Visulize a part of house price in San Francisco(SF)
 * Categorize data to three parts
 * Visulize data for each part
 
