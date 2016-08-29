@@ -9,9 +9,20 @@ library(shiny)
 library(leaflet)
 
 #Imoort data
-data_sf <- read.csv("data_sf.csv", stringsAsFactors=FALSE)
+data_sf <- read.csv("result_deleted_redundant_columns.csv", stringsAsFactors=FALSE)
 
 # Munge data
+temp <- gsub("[\"\\[\\]]*", "", data_sf$latlon)
+temp <- unlist(strsplit(temp, ",", fixed = T))
+temp <- as.data.frame(matrix(temp, ncol = 2, byrow = T))
+colnames(temp) <- c("lat", "lon")
+data_sf <- cbind(data_sf, temp)
+
+# Initially, lat and lon columns are factors
+data_sf$lat <- as.numeric(levels(data_sf$lat))[data_sf$lat]
+data_sf$lon <- as.numeric(levels(data_sf$lon))[data_sf$lon]
+
+# Obtain numeric price
 data_sf$price <- gsub(",", "", data_sf$price)
 data_sf$price <- as.numeric(data_sf$price)
 data_sf <- data_sf[!is.na(data_sf$price), ]
