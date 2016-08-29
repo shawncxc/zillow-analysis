@@ -37,10 +37,7 @@ shinyUI(fluidPage(
     
       plotOutput("boxPlot"),
       br(),
-      
-     # verbatimTextOutput("summary"),
-    #br(),
-    
+
       leafletOutput("categoricalMap"),
       br()
   
