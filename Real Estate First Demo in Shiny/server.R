@@ -9,7 +9,7 @@ library(shiny)
 library(leaflet)
 
 # Imoort data
-# Here "result_deleted_redundant_columns.csv" just a eaxmple, you could substitute "data_sf.csv" for it
+# Here "result_deleted_redundant_columns.csv" just an eaxmple, you could substitute "data_sf.csv" for it
 data_sf <- read.csv("result_deleted_redundant_columns.csv", stringsAsFactors=FALSE)
 
 # Munge data
