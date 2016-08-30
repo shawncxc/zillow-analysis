@@ -54,7 +54,8 @@ shinyServer(function(input, output) {
         
         leaflet(data_sf) %>%
           addTiles() %>%
-          addCircles(lng = ~lon, lat = ~lat, weight = 1, radius = 3)
+          addCircles(lng = ~lon, lat = ~lat, weight = 1, radius = 3,
+                     color = "black", fillOpacity = 0.5)
         
       }
 
@@ -75,7 +76,7 @@ shinyServer(function(input, output) {
       
       if(input$City == "San Francisco")
       {
-        boxplot(price~label, data = data_sf, col = c("dimgrey", "red", "green"),
+        boxplot(price~label, data = data_sf, col = c("dimgrey", "red", "blue"),
                 main = "Boxplot for House Price")
         
       }
@@ -93,11 +94,11 @@ shinyServer(function(input, output) {
         leaflet() %>%
           addTiles() %>%
           addCircles(data=overvalued, lng = ~lon, lat = ~lat, 
-                     weight = 1, radius = 3, color = "red")%>%
+                     weight = 1, radius = 3, color = "red", fillOpacity = 0.5)%>%
           addCircles(data=average, lng = ~lon, lat = ~lat, 
-                     weight = 1, radius = 3, color = "dimgrey")%>%
+                     weight = 1, radius = 3, color = "dimgrey", fillOpacity = 0.5)%>%
           addCircles(data=undervalued, lng = ~lon, lat = ~lat, 
-                     weight = 1, radius = 3, color = "green")
+                     weight = 1, radius = 3, color = "blue", fillOpacity = 0.5)
 
       }
       
