@@ -71,3 +71,5 @@ https://xuanzhou.shinyapps.io/Real_Estate_Demo/
 ####Pending 
 * Add legend on each graph
 * Add summary tables on the data
+* Important: Seperate and visulize the data by per sqft or bedrooms/bathrooms. It depends on the quality of these columns. 
+* Dealing with the NA or mistaken data in the bedrooms and bathrooms columns: One way is to assign the average value calculated from each category to those missing or mistaken one.
