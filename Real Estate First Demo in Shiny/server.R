@@ -97,7 +97,7 @@ shinyServer(function(input, output) {
           addCircles(data=average, lng = ~lon, lat = ~lat, 
                      weight = 1, radius = 3, color = "dimgrey")%>%
           addCircles(data=undervalued, lng = ~lon, lat = ~lat, 
-                     weight = 1, radius = 3, color = "blue")
+                     weight = 1, radius = 3, color = "green")
 
       }
       
