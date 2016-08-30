@@ -69,6 +69,6 @@ https://xuanzhou.shinyapps.io/Real_Estate_Demo/
 * Visulize data for each part
 
 ####Pending 
-* Add summary tables on the data
+* Add summary tables on the data or add the median and quantile info on the boxplot
 * Important: Seperate and visulize the data by per sqft or bedrooms/bathrooms. It depends on the quality of these columns. 
 * Deal with the NA or mistaken data in the bedrooms and bathrooms columns: One way is to assign the average value calculated from each category to those missing or mistaken one.
