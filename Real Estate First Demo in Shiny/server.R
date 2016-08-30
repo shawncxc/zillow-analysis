@@ -107,7 +107,11 @@ shinyServer(function(input, output) {
           addCircles(data=average, lng = ~lon, lat = ~lat, 
                      weight = 1, radius = 3, color = "dimgrey", fillOpacity = 0.5)%>%
           addCircles(data=undervalued, lng = ~lon, lat = ~lat, 
-                     weight = 1, radius = 3, color = "blue", fillOpacity = 0.5)
+                     weight = 1, radius = 3, color = "blue", fillOpacity = 0.5)%>%
+          addLegend("bottomright", color = c( "dimgrey", "red", "blue"),
+                    title = "House Location",
+                    labels = c("average", "overvalued", "undervalued"),
+                    opacity = 1)
 
       }
       
