@@ -65,7 +65,7 @@ https://xuanzhou.shinyapps.io/Real_Estate_Demo/
 
 ####Realized 
 * Visulize a part of house prices in SF
-* Categorize data to three parts in spite of the type of house
+* Categorize data into three parts in spite of the type of house
 * Visulize data for each part
 
 ####Pending 
