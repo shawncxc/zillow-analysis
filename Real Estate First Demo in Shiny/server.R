@@ -71,7 +71,7 @@ shinyServer(function(input, output) {
     })
     
     
-    # Output the barplot
+    # Output the boxplot
     output$boxPlot <- renderPlot({
       
       if(input$City == "San Francisco")
