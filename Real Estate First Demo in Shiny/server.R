@@ -78,14 +78,14 @@ shinyServer(function(input, output) {
       {
         
         boxplot((price/(1e+06))~label, data = data_sf, col = c("dimgrey", "red", "blue"),
-                horizontal = F, main = "Boxplot for House Price", ylab ="House Price",
-                xlab ="Category", axes= F)
+                horizontal = T, main = "Boxplot for House Price", ylab ="Category",
+                xlab ="House Price", axes= F)
         box()
-        mtext("* M means million US Dollars", side = 2, line = 2)
+        mtext("* M means million US Dollars", side = 1, line = 4)
         
-        axis(1, at = c(1,2,3), labels = c("average", "overvalued", "undervalued"))
+        axis(2, at = c(1,2,3), labels = c("average", "overvalued", "undervalued"))
         price <-  pretty(data_sf$price / (1e+06))
-        axis(2, at = price, 
+        axis(1, at = price, 
              labels = paste(price, "M", sep = ""))
         
       }
