@@ -76,8 +76,17 @@ shinyServer(function(input, output) {
       
       if(input$City == "San Francisco")
       {
-        boxplot(price~label, data = data_sf, col = c("dimgrey", "red", "blue"),
-                main = "Boxplot for House Price")
+        
+        boxplot((price/(1e+06))~label, data = data_sf, col = c("dimgrey", "red", "blue"),
+                horizontal = F, main = "Boxplot for House Price", ylab ="House Price",
+                xlab ="Category", axes= F)
+        box()
+        mtext("* M means million US Dollars", side = 2, line = 2)
+        
+        axis(1, at = c(1,2,3), labels = c("average", "overvalued", "undervalued"))
+        price <-  pretty(data_sf$price / (1e+06))
+        axis(2, at = price, 
+             labels = paste(price, "M", sep = ""))
         
       }
       
