@@ -17,13 +17,19 @@ Here’s what we’ve learned so far:
 
 How can you use this information?
 
-Source scripts, load libraries, and read data sets at the beginning of server.R outside of the shinyServer function. Shiny will only run this code once, which is all you need to set your server up to run the R expressions contained in shinyServer.
+Source scripts, load libraries, and read data sets at the beginning of server.R outside of the shinyServer function. 
+Shiny will only run this code once, which is all you need to set your server up to run the R expressions contained in shinyServer.
 
-Define user specific objects inside shinyServer’s unnamed function, but outside of any render* calls. These would be objects that you think each user will need their own personal copy of. For example, an object that records the user’s session information. This code will be run once per user.
+Define user specific objects inside shinyServer’s unnamed function, but outside of any render* calls. 
+These would be objects that you think each user will need their own personal copy of. 
+For example, an object that records the user’s session information. This code will be run once per user.
 
-Only place code that Shiny must rerun to build an object inside of a render* function. Shiny will rerun all of the code in a render* chunk each time a user changes a widget mentioned in the chunk. This can be quite often.
+Only place code that Shiny must rerun to build an object inside of a render* function. 
+Shiny will rerun all of the code in a render* chunk each time a user changes a widget mentioned in the chunk. 
+This can be quite often.
 
-You should generally avoid placing code inside a render function that does not need to be there. The code will slow down the entire app.
+You should generally avoid placing code inside a render function that does not need to be there. 
+The code will slow down the entire app.
 
 *** Reference from Shiny by Rstudio: http://shiny.rstudio.com/tutorial/lesson5/
 
