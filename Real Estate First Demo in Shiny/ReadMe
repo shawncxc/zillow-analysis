@@ -11,9 +11,10 @@ For the appearance of the demo, please humor me, it should be great after my par
 *** 
 Here’s what we’ve learned so far:
 
-The server.R script is run once, when you launch your app
-The unnamed function inside shinyServer is run once each time a user visits your app
-The R expressions inside render* functions are run many times. Shiny runs them once each time a user changes a widget.
+1. The server.R script is run once, when you launch your app
+2. The unnamed function inside shinyServer is run once each time a user visits your app
+3. The R expressions inside render* functions are run many times. Shiny runs them once each time a user changes a widget.
+
 How can you use this information?
 
 Source scripts, load libraries, and read data sets at the beginning of server.R outside of the shinyServer function. Shiny will only run this code once, which is all you need to set your server up to run the R expressions contained in shinyServer.
