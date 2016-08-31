@@ -87,6 +87,17 @@ shinyServer(function(input, output) {
         price <-  pretty(data_sf$price / (1e+06))
         axis(1, at = price, 
              labels = paste(price, "M", sep = ""))
+             
+        # Add median, quartlie infomation
+        # Use "magrittr": "%>%", forward-pipe operator, to minimize the need for local variables
+        round(fivenum(undervalued$price / 1e+06), 1) %>%
+        text(labels = paste(., "M", sep = ""), y=2.5 , cex = 0.8)
+        
+        round(fivenum(overvalued$price / 1e+06), 1) %>%
+        text(labels = paste(., "M", sep = ""), y=1.5, cex = 0.8)
+        
+        round(fivenum(average$price / 1e+06), 1) %>%
+        text(labels = paste(., "M", sep = ""), y=0.5, cex = 0.8)
         
       }
       
