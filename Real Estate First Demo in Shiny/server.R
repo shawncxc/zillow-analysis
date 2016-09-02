@@ -74,7 +74,7 @@ shinyServer(function(input, output) {
     })
     
     
-    # Output the categorical map
+    # Output the categorical map by total price
     output$categoricalMap <- renderLeaflet({
 
       if(input$City == "San Francisco")
