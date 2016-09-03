@@ -12,9 +12,11 @@
     "co": "^4.6.0",
     "commander": "^2.9.0",
     "json2csv": "^3.6.3",
+    "q": "^1.4.1",
     "request": "^2.74.0",
     "request-promise": "^4.1.1",
     "urlencode": "^1.1.0",
-    "xml2js": "^0.4.17"
+    "xml2js": "^0.4.17",
+    "xml2json": "^0.10.0"
   }
 }
