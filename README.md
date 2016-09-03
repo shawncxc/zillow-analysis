@@ -79,4 +79,4 @@ I would prefer the qs method for this demo, because it is more interpretable.
 * Deal with the NA or mistaken data in the bedrooms and bathrooms columns: One way is to assign the average value calculated from each category to those missing or mistaken one
 * Deal with no enough data
 * Functionalize the data preparation
-* Debug in 2nd Demo
+* Debug in 2nd Demo: interactive issues:  "subdata <- SubDataFunc(data_sf, input$nBeds, input$nBaths)"
