@@ -1,4 +1,4 @@
-# Imoort data
+# Import data
 # Here "result_deleted_redundant_columns.csv" just an eaxmple, you could substitute "data_sf.csv" for it
 data_sf <- read.csv("result_deleted_redundant_columns.csv", stringsAsFactors=FALSE)
 
