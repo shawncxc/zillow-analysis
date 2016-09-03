@@ -77,5 +77,6 @@ I would prefer the qs method for this demo, because it is more interpretable.
 * Add summary tables for the boxplot
 * Important: Seperate and visulize the data by per sqft or bedrooms/bathrooms. It depends on the quality of these columns. 
 * Deal with the NA or mistaken data in the bedrooms and bathrooms columns: One way is to assign the average value calculated from each category to those missing or mistaken one
+* Deal with no enough data
 * Functionalize the data preparation
 * Debug in 2nd Demo
