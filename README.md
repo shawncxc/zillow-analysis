@@ -42,7 +42,8 @@ That's it!
 
 
 ## Data Analysis 
-#### House Prices Visualization in San Francisco
+#### Link of the Demo in Shiny: https://xuanzhou.shinyapps.io/Real_Estate_Demo/
+#### House Prices Visualization in San Francisco(SF)
 
 * Normalize the data, get the overall summary
 * Group the data by three catergories:  overvalued, average, undervalued
@@ -60,14 +61,22 @@ Should I use one standard deviation (sd) method or quantile segmentation (qs)?
 This demo performs exploratory data analysis.
 I would prefer the qs method for this demo, because it is more interpretable.
 
-####Link of the First Demo in Shiny:
-https://xuanzhou.shinyapps.io/Real_Estate_Demo/
 
-####Realized 
-* Visulize a part of house prices in San Francisco(SF)
-* Categorize data to three parts
+
+### Realized 
+#### First Demo
+* Visulize a part of house prices in SF
+* Categorize data into three parts in spite of the types of houses
 * Visulize data for each part
 
-####Pending 
-* Add legend on each graph
-* Add summary tables on the data
+#### Second Demo
+* Visulize house price based on house type
+
+
+### Pending 
+* Add summary tables for the boxplot
+* Important: Seperate and visulize the data by per sqft or bedrooms/bathrooms. It depends on the quality of these columns. 
+* Deal with the NA or mistaken data in the bedrooms and bathrooms columns: One way is to assign the average value calculated from each category to those missing or mistaken one
+* Deal with no enough data
+* Functionalize the data preparation
+* Debug in 2nd Demo: interactive issues:  "subdata <- SubDataFunc(data_sf, input$nBeds, input$nBaths)"
