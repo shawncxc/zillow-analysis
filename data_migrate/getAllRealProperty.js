@@ -4,7 +4,6 @@
 
 var request = require('request-promise');
 var Q = require('q');
-var co = require('co');
 var config = require('../config.json');
 var genCSV = require('./genCSV.js');
 

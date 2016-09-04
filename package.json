@@ -12,6 +12,7 @@
     "co": "^4.6.0",
     "commander": "^2.9.0",
     "json2csv": "^3.6.3",
+    "mongoose": "^4.6.0",
     "q": "^1.4.1",
     "request": "^2.74.0",
     "request-promise": "^4.1.1",
