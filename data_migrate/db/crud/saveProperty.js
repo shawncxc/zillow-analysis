@@ -50,10 +50,10 @@ var savePerAddr = co.wrap(function* (street) {
       property = dataMassage(property);
       try {
         var newProperty = new Property(property);
-        /*var alreadyExists = yield Property.find({zpid: property.zpid}).exec();
-        if (alreadyExists) {
+        var alreadyExists = yield Property.find({zpid: property.zpid}).exec();
+        if (alreadyExists[0]) {
           continue;
-        }*/
+        }
         yield newProperty.save();
         console.log(property);
       } catch (e) {
