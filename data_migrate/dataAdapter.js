@@ -1,10 +1,11 @@
 var dataAdapter = function(data) {
   var code = data['SearchResults:searchresults'].message.code;
-  if (code === '508') {
+  data = data['SearchResults:searchresults'].response;
+  if (data === undefined || code === '508') {
     return false;
   }
 
-  data = data['SearchResults:searchresults'].response.results.result;
+  data = data.results.result;
 
   var res = [];
   data.forEach(d => {
