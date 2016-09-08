@@ -1,72 +1,70 @@
+// Third Party Module
 var co = require('co');
+var wait = require('co-wait');
 var mongoose = require('mongoose');
-var Property = require('../model/property.js');
-var Street = require('../model/street.js');
 var request = require('request-promise');
 var parser = require('xml2json');
+var _ = require('underscore');
+
+// Own Module
+var Property = require('../model/property.js');
+var Street = require('../model/street.js');
 var config = require('../../../config.json');
 var getData = require('../../getData.js');
+var dataMassage = require('./propertyDataMassage.js');
 
+// Define Promise
 mongoose.Promise = global.Promise;
 
-var getAllStreets = co.wrap(function* () {
-  console.log('RUNNING getAllStreets');
-  yield mongoose.connect('mongodb://localhost/zillow');
-  var streets = yield Street.find().exec();
-  return streets;
-});
-
-var dataMassage = function (data) {
-  data = data.results.result;
-  return {
-    zpid: data.zpid,
-    latlon: [ parseInt(data.address.latitude), parseInt(data.address.longitude) ],
-    street: data.address.street || 'UNKNOWN',
-    zipcode: data.address.zipcode || 'UNKNOWN',
-    city: data.address.city || 'UNKNOWN',
-    state: data.address.state || 'UNKNOWN',
-    bedrooms: parseInt(data.address.bedrooms) || 0,
-    bathrooms: parseInt(data.address.bathrooms) || 0,
-    finishedSqFt: parseInt(data.finishedSqFt),
-    yearBuilt: data.yearBuilt || 'UNKNOWN',
-    price: parseInt(data.zestimate.amount.$t) || 0,
-    rent: parseInt(data.rentzestimate.amount.$t) || 0,
-    taxYear: data.taxAssessmentYear || 'UNKNOWN',
-    tax: parseInt(data.taxAssessment) || 0,
-    useCode: data.useCode || 'UNKNOWN',
-  };
-};
-
 var savePerAddr = co.wrap(function* (street) {
-  for (var i = 1; i < 10000; i++) {
-    var address = i + ' ' + street.name;
-    var property = yield getData(address, 'San Francisco', 'CA').then(data => {
+  for (var i = 9; i < 1000; i++) {
+    yield wait(2000);
+    var address = i + ' ' + street;
+    var inc_id = street.replace(/\s+/g, '') + i;
+    console.log('---------- ', i, ' ----------');
+    console.log(address);
+    var rawProperties = yield getData(address, 'San Francisco', 'CA').then(data => {
+      let statusCode, body;
       data = JSON.parse(parser.toJson(data));
-      data = data['SearchResults:searchresults'].response;
-      return data;
+      body = data['SearchResults:searchresults'];
+      statusCode = body.message.code;
+      console.log(body.message.text);
+      
+      return body.response;
     });
 
-    if (property) {
-      property = dataMassage(property);
-      try {
-        var newProperty = new Property(property);
-        var alreadyExists = yield Property.find({zpid: property.zpid}).exec();
-        if (alreadyExists[0]) {
-          continue;
+    if (rawProperties) {
+      var properties = dataMassage(rawProperties, inc_id);
+      console.log(address, ': ', properties.length, ' properties detected!');
+      for (var j = 0; j < properties.length; j++) {
+        try {
+          var property = properties[j];
+          var newProperty = new Property(property);
+          var alreadyExists = yield Property.find({zpid: property.zpid}).exec();
+          if (alreadyExists[0]) {
+            console.log('already exists');
+            continue;
+          }
+          yield newProperty.save();
+          console.log('saved');
+        } catch (e) {
+          console.log(e);
         }
-        yield newProperty.save();
-        console.log(property);
-      } catch (e) {
-        console.log(e);
       }
+    } else {
+      console.log(address, ' not found ... ');
     }
+    console.log('========== ', i, ' ==========');
   }
 });
 
 co(function* () {
-  //yield mongoose.connect('mongodb://localhost/zillow');
-  var streets = yield getAllStreets();
-  for (var s = 0; s < streets.length; s++) {
-    yield savePerAddr(streets[s]);  
+  yield mongoose.connect('mongodb://localhost/zillow');
+  var streets;
+  streets = yield Street.find().exec();
+  streets = _.sortBy(streets, 'name').map(x => x.name);
+
+  for (var s = 527; s < streets.length; s++) {
+    yield savePerAddr(streets[s]);
   }
 });

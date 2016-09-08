@@ -10,8 +10,14 @@ var getData = co.wrap(function* (address, city, state) {
   var uri = config.zillow + '/webservice/GetDeepSearchResults.htm?zws-id=' + 
             config.zws_id + '&address=' + address + '&citystatezip=' + city + 
             '%2C+' + state + '&rentzestimate=true';
-  var result = yield request(uri);
-
+  
+  var result;
+  try {
+    result = yield request(uri);
+  } catch (e) {
+    console.error(e);
+  }
+  
   return result;
 });
 

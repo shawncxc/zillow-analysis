@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var propertySchema = new mongoose.Schema({
   // ID
   zpid: String,
+  inc_id: String,
   
   // ADDRESS
   latlon: [Number],
