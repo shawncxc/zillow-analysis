@@ -17,6 +17,16 @@ shinyServer(function(input, output) {
   ###############################################
   # 1st Demo
   
+  # Show a notice, New: 09/10/2016
+  output$notice1 <- renderUI({
+    # Need to be modified: let control flow choose data interactively
+    if(input$City == "San Francisco")
+    {
+      div(strong("Click on the House to Get More Information"), style = "color:blue")
+      
+    }
+    
+  })
   
   # Output the inital map and data
   output$mymap <- renderLeaflet({
@@ -27,7 +37,11 @@ shinyServer(function(input, output) {
       leaflet(data_sf) %>%
         addTiles() %>%
         addCircles(lng = ~lon, lat = ~lat, weight = 1, radius = 3, 
-                   color = "black", fillOpacity = 0.5) %>%
+                   color = "black", fillOpacity = 0.5,
+                   popup = ~paste(paste0("<b>Price", ": $", price, "</b>"),
+                                  paste0("Beds: ", bedrooms, " Baths: ", bathrooms),
+                                  street, paste(city, state, zipcode), 
+                                  sep = "<br/>")) %>%
         addLegend("bottomright", color = "black",
                   labels = "House Location",
                   opacity = 1)
@@ -87,17 +101,18 @@ shinyServer(function(input, output) {
     if(input$City == "San Francisco")
     {
       
-      leaflet() %>%
+      leaflet(data_sf) %>%
         addTiles() %>%
-        addCircles(data=overvalued, lng = ~lon, lat = ~lat, 
-                   weight = 1, radius = 3, color = "red", fillOpacity = 0.5)%>%
-        addCircles(data=average, lng = ~lon, lat = ~lat, 
-                   weight = 1, radius = 3, color = "dimgrey", fillOpacity = 0.5)%>%
-        addCircles(data=undervalued, lng = ~lon, lat = ~lat, 
-                   weight = 1, radius = 3, color = "blue", fillOpacity = 0.5) %>%
-        addLegend("bottomright", color = c( "dimgrey", "red", "blue"),
-                  title = "House Location by Total Price",
-                  labels = c("average", "overvalued", "undervalued"),
+        addCircles(lng = ~lon, lat = ~lat,
+                   weight = 1, radius = 3, 
+                   color =  ~pal(label), fillOpacity = 0.5,
+                   popup = ~paste(paste0("<b>Class", ": ", label, "</b>"),
+                                  paste0("<b>Price", ": $", price, "</b>"),
+                                  paste0("Beds: ", bedrooms, " Baths: ", bathrooms),
+                                  street, paste(city, state, zipcode), 
+                                  sep = "<br/>")) %>%
+        addLegend("bottomright", pal = pal, values = ~label,
+                  title = "House Classification by Total Price",
                   opacity = 1)
       
     }
@@ -168,15 +183,31 @@ shinyServer(function(input, output) {
     else if((input$nBeds > 10 || input$nBaths > 10) || (input$nBeds < 0 || input$nBaths < 0)
             || (!is.numeric(input$nBeds) || !is.numeric(input$nBaths)))
     {
-      return("Invalid Number of Bedrooms or Bathrooms Input: Range from 1 to 10")
+      p("Invalid Number of Bedrooms or Bathrooms Input:",
+        br(),
+        span("Range Should from 1 to 10", style = "color:blue"),
+        br(),
+        "Please Try Again!" , style = "color:red")
     }
-    
-    
-    
+  
   })
   
   
-  #### New add
+  # Show a notice, New 09/10/2016
+  output$notice2 <- renderUI({
+
+    if( !is.null(input$nBeds) && input$City2 == "San Francisco")
+    {
+      # Need to be modified: let control flow choose data interactively
+      if(!is.null(ClassifiedPrice(data_sf, input$nBeds, input$nBaths)) && nrow(data_sf) != 0)
+      {
+        #"Click on The House to Get More Information"
+        div(strong("Click on the House to Get More Information"), style = "color:blue")
+
+      }
+    }
+
+  })
   
   # Output the categorical map by house type
   output$classifiedPrice <- renderLeaflet({ 
@@ -189,20 +220,17 @@ shinyServer(function(input, output) {
           # Need to be modified: It is not reactive
           subdata <- SubDataFunc(data_sf, input$nBeds, input$nBaths)
           
-          leaflet() %>%
+          leaflet(subdata) %>%
             addTiles() %>%
-            addCircles(data= subdata[subdata$label == "overvalued", ], 
-                       lng = ~lon, lat = ~lat,
-                       weight = 1, radius = 3, color = "red", fillOpacity = 0.5)%>%
-            addCircles(data= subdata[subdata$label == "average", ], 
-                       lng = ~lon, lat = ~lat,
-                       weight = 1, radius = 3, color = "dimgrey", fillOpacity = 0.5)%>%
-            addCircles(data= subdata[subdata$label == "undervalued", ], 
-                       lng = ~lon, lat = ~lat,
-                       weight = 1, radius = 3, color = "blue", fillOpacity = 0.5) %>%
-            addLegend("bottomright", color = c( "dimgrey", "red", "blue"),
-                      title = "House Location by Total Price",
-                      labels = c("average", "overvalued", "undervalued"),
+            addCircles(lng = ~lon, lat = ~lat,
+                       weight = 1, radius = 3,
+                       color =  ~pal(label), fillOpacity = 0.5,
+                       popup = ~paste(paste0("<b>Class: ",label, "</b>"),
+                                      paste0("<b>Price", ": $", price, "</b>"),
+                                      street, paste(city, state, zipcode),
+                                      sep = "<br/>")) %>%
+            addLegend("bottomright", pal = pal, values = ~label,
+                      title = "House Classification by House Type",
                       opacity = 1)
         }
         
@@ -231,8 +259,5 @@ shinyServer(function(input, output) {
 
     })
     
-  #### New add
-
-  
   
 })
