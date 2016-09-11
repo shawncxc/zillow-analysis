@@ -1,6 +1,6 @@
 # Import data
-# Here "result_deleted_redundant_columns.csv" just an eaxmple, you could substitute "data_sf.csv" for it
-data_sf <- read.csv("result_deleted_redundant_columns.csv", stringsAsFactors=FALSE)
+# Here "data_sf.csv" just an eaxmple, you could substitute any formatted data for it
+data_sf <- read.csv("data_sf.csv", stringsAsFactors=FALSE)
 
 # Munge data
 temp <- gsub("[\"\\[\\]]*", "", data_sf$latlon)
