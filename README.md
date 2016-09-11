@@ -30,10 +30,16 @@ That's it!
     
         -h, --help     output usage information
         -V, --version  output the version number
-      -a, --address  Add Address 
+        -a, --address  Add Address 
         -c, --city     Add City
         -s, --state    Add State
         -f, --flag     Generate CSV
+    
+    OR:
+
+      If you want to get all the listings:
+      
+      node data_migrate/db/crud/saveProperty.js
 
 *Address flag this can be omitted, and will get all the addresses        
 
