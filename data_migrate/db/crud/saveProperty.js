@@ -42,7 +42,7 @@ var savePerAddr = co.wrap(function* (street) {
           var newProperty = new Property(property);
           var alreadyExists = yield Property.find({zpid: property.zpid}).exec();
           if (alreadyExists[0]) {
-            console.log('already exists');
+            console.log('No.', i, ' already exists');
             continue;
           }
           yield newProperty.save();
@@ -51,10 +51,7 @@ var savePerAddr = co.wrap(function* (street) {
           console.log(e);
         }
       }
-    } else {
-      console.log(address, ' not found ... ');
     }
-    console.log('========== ', i, ' ==========');
   }
 });
 
@@ -64,7 +61,7 @@ co(function* () {
   streets = yield Street.find().exec();
   streets = _.sortBy(streets, 'name').map(x => x.name);
 
-  for (var s = 527; s < streets.length; s++) {
+  for (var s = 0; s < streets.length; s++) {
     yield savePerAddr(streets[s]);
   }
 });
