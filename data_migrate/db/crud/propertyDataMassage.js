@@ -1,7 +1,8 @@
-var model = function(x, inc_id) {
+var model = function(x, street_id, inc_id) {
   return {
     zpid:             x.zpid,
-    inc_id:           inc_id || 'UNKNOWN',
+    inc_id:           inc_id || 0,
+    street_id:        street_id || 'UNKNOWN',
     latlon:           [ parseFloat(x.address.latitude), parseFloat(x.address.longitude) ],
     street:           x.address.street || 'UNKNOWN',
     zipcode:          x.address.zipcode || 'UNKNOWN',
@@ -24,14 +25,14 @@ var canMassage = function(x) {
         x.zestimate.amount && x.rentzestimate.amount;
 };
 
-module.exports = function (data, inc_id) {
+module.exports = function (data, street_id, inc_id) {
   data = data.results.result;
   var temp;
 
   if (Array.isArray(data)) {
     temp = data.map(x => {
       if (canMassage(x)) {
-        return model(x, inc_id);
+        return model(x, street_id, inc_id);
       }
       return false;
     }).filter(x => {
@@ -39,7 +40,7 @@ module.exports = function (data, inc_id) {
     });
   } else {
     if (canMassage(data)) {
-      temp = [model(data, inc_id)];
+      temp = [model(data, street_id, inc_id)];
     } else {
       temp = [];
     }

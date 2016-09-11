@@ -17,10 +17,17 @@ var dataMassage = require('./propertyDataMassage.js');
 mongoose.Promise = global.Promise;
 
 var savePerAddr = co.wrap(function* (street) {
-  for (var i = 9; i < 1000; i++) {
+  var endIdx = 1000;
+  var startIdxes = yield Property.find({ street_id: street }, { inc_id: 1 }).sort({ inc_id: 1 }).exec();
+  var startIdx = Math.max(startIdxes[0].inc_id || 0, 1);
+  if (startIdx >= endIdx) {
+    return;
+  }
+  console.log(startIdxes, ' -> ', startIdx);
+
+  for (var i = startIdx; i <= endIdx; i++) {
     yield wait(2000);
     var address = i + ' ' + street;
-    var inc_id = street.replace(/\s+/g, '') + i;
     console.log('---------- ', i, ' ----------');
     console.log(address);
     var rawProperties = yield getData(address, 'San Francisco', 'CA').then(data => {
@@ -34,7 +41,7 @@ var savePerAddr = co.wrap(function* (street) {
     });
 
     if (rawProperties) {
-      var properties = dataMassage(rawProperties, inc_id);
+      var properties = dataMassage(rawProperties, street, i);
       console.log(address, ': ', properties.length, ' properties detected!');
       for (var j = 0; j < properties.length; j++) {
         try {
