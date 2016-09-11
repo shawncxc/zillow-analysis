@@ -9,7 +9,9 @@ library(shiny)
 library(leaflet)
 
 # Shiny UI
-shinyUI(navbarPage("Real Estate Analysis and Data Visualization",
+shinyUI(navbarPage(
+
+                   title = "Real Estate Analysis and Data Visualization",
                    
                    tabPanel("Overview",
                             titlePanel("First Demo"), # Application title,
@@ -21,6 +23,7 @@ shinyUI(navbarPage("Real Estate Analysis and Data Visualization",
                                   'City', 'Select a City', choices = c("None", "San Francisco"), 
                                   selected = "None", selectize = FALSE),
                                 
+                                uiOutput("notice1"),
                                 br(),
                                 br(),
                                 
@@ -85,9 +88,10 @@ shinyUI(navbarPage("Real Estate Analysis and Data Visualization",
                                 h2("Price Visualization Based on House Type"),
                                 br(),
                                 
-                          
+                                uiOutput("notice2"),
                                 leafletOutput("classifiedPrice")
-                             
+                                br(),
+                                br()
                               )
                               
                             )),
