@@ -19,13 +19,16 @@ mongoose.Promise = global.Promise;
 var savePerAddr = co.wrap(function* (street) {
   var endIdx = 1000;
   var startIdxes = yield Property.find({ street_id: street }, { inc_id: 1 }).sort({ inc_id: -1 }).exec();
+  if (startIdxes.length === 0) {
+    return;
+  }
   var startIdx = Math.max(startIdxes[0].inc_id || 0, 1);
   var dataSize = yield Property.find({}).count().exec();
+  console.log(startIdxes, ' -- ', startIdx);
+  console.log(dataSize, ' -- ', endIdx);
   if (startIdx >= endIdx || dataSize >= endIdx) {
     return;
   }
-  console.log(startIdxes, ' -- ', startIdx);
-  console.log(dataSize, ' -- ', endIdx);
 
   for (var i = startIdx; i <= endIdx; i++) {
     yield wait(2000);
