@@ -67,13 +67,14 @@ var savePerAddr = co.wrap(function* (street) {
   }
 });
 
-co(function* () {
+module.exports = co.wrap(function* (fromNthStreet) {
+  fromNthStreet = fromNthStreet || 0;
   yield mongoose.connect('mongodb://localhost/zillow');
   var streets;
   streets = yield Street.find().exec();
   streets = _.sortBy(streets, 'name').map(x => x.name);
 
-  for (var s = 0; s < streets.length; s++) {
+  for (var s = fromNthStreet; s < streets.length; s++) {
     yield savePerAddr(streets[s]);
   }
 });

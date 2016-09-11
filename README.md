@@ -34,12 +34,9 @@ That's it!
         -c, --city     Add City
         -s, --state    Add State
         -f, --flag     Generate CSV
-    
-    OR:
-
-      If you want to get all the listings:
-      
-      node data_migrate/db/crud/saveProperty.js
+        -g, --getALL   Get all properties
+        -x, --saveDB   Save all properties to mongodb
+        (-x will save all properties to your local mongodb, db name: zillow, collection: properties)
 
 *Address flag this can be omitted, and will get all the addresses        
 
