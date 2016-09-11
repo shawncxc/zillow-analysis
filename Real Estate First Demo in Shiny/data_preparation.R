@@ -18,6 +18,9 @@ data_sf$price <- gsub(",", "", data_sf$price)
 data_sf$price <- as.numeric(data_sf$price)
 data_sf <- data_sf[!is.na(data_sf$price), ]
 
+# Remove duplicated rows
+data_sf <- data_sf[!duplicated(data_sf$zpid), ]
+
 # Seperate 3 data sets: overvalued, average, undervalued
 data_sf <- data_sf[order(data_sf$price, decreasing = F), ]
 
@@ -29,3 +32,8 @@ data_sf$label[data_sf$price < quantile(data_sf$price, 0.25)] <- "undervalued"
 overvalued <- data_sf[data_sf$label ==  "overvalued", ]
 average <- data_sf[data_sf$label ==  "average", ]
 undervalued <- data_sf[data_sf$label ==  "undervalued", ]
+
+# Add palette
+pal <- colorFactor(c("dimgrey", "red", "blue"), 
+                   domain = c("average", "overvalued", "undervalued"),
+                   ordered = T)
