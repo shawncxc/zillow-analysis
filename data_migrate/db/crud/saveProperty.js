@@ -17,23 +17,23 @@ var dataMassage = require('./propertyDataMassage.js');
 mongoose.Promise = global.Promise;
 
 var savePerAddr = co.wrap(function* (street) {
+  var startIdx;
   var endIdx = 1000;
   var startIdxes = yield Property.find({ street_id: street }, { inc_id: 1 }).sort({ inc_id: -1 }).exec();
   if (startIdxes.length === 0) {
-    return;
+    startIdx = 0;
+  } else {
+    startIdx = startIdxes[0].inc_id;
   }
-  var startIdx = Math.max(startIdxes[0].inc_id || 0, 1);
   var dataSize = yield Property.find({}).count().exec();
-  console.log(startIdxes, ' -- ', startIdx);
-  console.log(dataSize, ' -- ', endIdx);
   if (startIdx >= endIdx || dataSize >= endIdx) {
     return;
   }
+  console.log('Start from: ', startIdx);
 
   for (var i = startIdx; i <= endIdx; i++) {
-    yield wait(2000);
+    yield wait(1500);
     var address = i + ' ' + street;
-    console.log('---------- ', i, ' ----------');
     console.log(address);
     var rawProperties = yield getData(address, 'San Francisco', 'CA').then(data => {
       let statusCode, body;
@@ -60,7 +60,7 @@ var savePerAddr = co.wrap(function* (street) {
           yield newProperty.save();
           console.log('saved');
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       }
     }
