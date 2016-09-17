@@ -7,8 +7,11 @@
 
 library(shiny)
 library(leaflet)
-source("data_preparation.R")
 source("functions.R")
+
+test <- PreprocesData()
+data_sf <- test$data_sf
+perSqFtPrice <- test$perSqFtPrice
 
 
 # Shiny Server
@@ -16,7 +19,7 @@ shinyServer(function(input, output) {
   ###############################################
   ###############################################
   # 1st Demo
-  
+
   # Show a notice, New: 09/10/2016
   output$notice1 <- renderUI({
     # Need to be modified: let control flow choose data interactively
@@ -27,6 +30,7 @@ shinyServer(function(input, output) {
     }
     
   })
+  
   
   # Output the inital map and data
   output$mymap <- renderLeaflet({
@@ -59,7 +63,7 @@ shinyServer(function(input, output) {
   })
   
   
-  # Output the barplot
+  # Output the barplot, Modified: 09/17/2016
   output$boxPlot <- renderPlot({
     
     if(input$City == "San Francisco")
@@ -80,27 +84,27 @@ shinyServer(function(input, output) {
       
       # Add median, quartlie infomation
       # Use "magrittr": "%>%", forward-pipe operator, to minimize the need for local variables
-      round(fivenum(undervalued$price / 1e+06), 1) %>%
+      round(fivenum(data_sf[data_sf$label ==  "undervalued", 'price'] / 1e+06), 1) %>%
         text(labels = paste(., "M", sep = ""), y=2.5 , cex = 0.8)
       
-      round(fivenum(overvalued$price / 1e+06), 1) %>%
+      round(fivenum(data_sf[data_sf$label ==  "overvalued", 'price'] / 1e+06), 1) %>%
         text(labels = paste(., "M", sep = ""), y=1.5, cex = 0.8)
       
-      round(fivenum(average$price / 1e+06), 1) %>%
+      round(fivenum(data_sf[data_sf$label ==  "average", 'price'] / 1e+06), 1) %>%
         text(labels = paste(., "M", sep = ""), y=0.5, cex = 0.8)
       
     }
     
+    
   })
   
-
+  
   
   # Output the categorical map by total price
   output$categoricalMap <- renderLeaflet({
     
     if(input$City == "San Francisco")
     {
-      
       leaflet(data_sf) %>%
         addTiles() %>%
         addCircles(lng = ~lon, lat = ~lat,
@@ -115,13 +119,13 @@ shinyServer(function(input, output) {
                   title = "House Classification by Total Price",
                   opacity = 1)
       
+      
     }
     
     
   })
   
-  
-  # New: 09/01/2016
+
   # Output the categorical map by per sqft price
   output$perSqFtPriceMap <- renderLeaflet({
     
@@ -131,12 +135,24 @@ shinyServer(function(input, output) {
       leaflet() %>%
         addTiles() %>%
         addCircles(data=perSqFtPrice[perSqFtPrice$perSqFtPrice > quantile(perSqFtPrice$perSqFtPrice, 0.75), ], 
-                   lng = ~lon, lat = ~lat, weight = 1, radius = 3, color = "red", fillOpacity = 0.5)%>%
+                   lng = ~lon, lat = ~lat, weight = 1, radius = 3, color = "red", fillOpacity = 0.5,
+                   popup = ~paste(paste0("<b>Sqft Price", ": $", round(perSqFtPrice), "</b>"),
+                                  paste0("Beds: ", bedrooms, " Baths: ", bathrooms),
+                                  street, paste(city, state, zipcode), 
+                                  sep = "<br/>"))%>%
         addCircles(data=perSqFtPrice[perSqFtPrice$perSqFtPrice >= quantile(perSqFtPrice$perSqFtPrice, 0.25)
                                      & perSqFtPrice$perSqFtPrice <= quantile(perSqFtPrice$perSqFtPrice, 0.75), ],
-                   lng = ~lon, lat = ~lat, weight = 1, radius = 3, color = "dimgrey", fillOpacity = 0.5)%>%
+                   lng = ~lon, lat = ~lat, weight = 1, radius = 3, color = "dimgrey", fillOpacity = 0.5,
+                   popup = ~paste(paste0("<b>Sqft Price", ": $", round(perSqFtPrice), "</b>"),
+                                  paste0("Beds: ", bedrooms, " Baths: ", bathrooms),
+                                  street, paste(city, state, zipcode), 
+                                  sep = "<br/>"))%>%
         addCircles(data=perSqFtPrice[perSqFtPrice$perSqFtPrice < quantile(perSqFtPrice$perSqFtPrice, 0.25), ], 
-                   lng = ~lon, lat = ~lat, weight = 1, radius = 3, color = "blue", fillOpacity = 0.5) %>%
+                   lng = ~lon, lat = ~lat, weight = 1, radius = 3, color = "blue", fillOpacity = 0.5,
+                   popup = ~paste(paste0("<b>Sqft Price", ": $", round(perSqFtPrice), "</b>"),
+                                  paste0("Beds: ", bedrooms, " Baths: ", bathrooms),
+                                  street, paste(city, state, zipcode), 
+                                  sep = "<br/>")) %>%
         addLegend("bottomright", color = c( "dimgrey", "red", "blue"),
                   title = "House Location by Per Sqft Price",
                   labels = c("average", "overvalued", "undervalued"),
@@ -147,11 +163,12 @@ shinyServer(function(input, output) {
     
   })
   
+  
   ###############################################
   ###############################################
   # 2nd Demo
   
-  
+  # Baths and Beds Input UI
   output$BathsNBeds <- renderUI({
     
     
@@ -183,13 +200,15 @@ shinyServer(function(input, output) {
     else if((input$nBeds > 10 || input$nBaths > 10) || (input$nBeds < 0 || input$nBaths < 0)
             || (!is.numeric(input$nBeds) || !is.numeric(input$nBaths)))
     {
+      
       p("Invalid Number of Bedrooms or Bathrooms Input:",
         br(),
         span("Range Should from 1 to 10", style = "color:blue"),
         br(),
         "Please Try Again!" , style = "color:red")
-    }
   
+    }
+    
   })
   
   
@@ -208,6 +227,8 @@ shinyServer(function(input, output) {
     }
 
   })
+
+  
   
   # Output the categorical map by house type
   output$classifiedPrice <- renderLeaflet({ 
@@ -217,7 +238,6 @@ shinyServer(function(input, output) {
         # Need to be modified: let control flow choose data interactively  
         if(!is.null(ClassifiedPrice(data_sf, input$nBeds, input$nBaths)) && nrow(data_sf) != 0)
         {
-          # Need to be modified: It is not reactive
           subdata <- SubDataFunc(data_sf, input$nBeds, input$nBaths)
           
           leaflet(subdata) %>%
@@ -232,6 +252,7 @@ shinyServer(function(input, output) {
             addLegend("bottomright", pal = pal, values = ~label,
                       title = "House Classification by House Type",
                       opacity = 1)
+          
         }
         
         # No data available
@@ -243,6 +264,7 @@ shinyServer(function(input, output) {
                                                                     "<b>No Data Available:</b>",
                                                                     "<b>Please Try Again</b>"),
                       options = popupOptions(closeButton = FALSE))
+          
         
         }
         
@@ -256,8 +278,8 @@ shinyServer(function(input, output) {
       
     }
       
-
+    
+    
     })
     
-  
 })
