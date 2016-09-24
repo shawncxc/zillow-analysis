@@ -109,9 +109,9 @@ InteractLabel <- function(data, label_react, beds, baths)
   {
     subdata$label <- "overvalued"
     
-    subdata$label[subdata[label_react] >= quantile(subdata[label_react], 0.25) & 
-                  subdata[label_react] <= quantile(subdata[label_react], 0.75)] <- "average"
-    subdata$label[subdata[label_react] < quantile(subdata[label_react], 0.25)] <- "undervalued"
+    subdata$label[subdata[label_react] >= quantile(subdata[[label_react]], 0.25) & 
+                  subdata[label_react] <= quantile(subdata[[label_react]], 0.75)] <- "average"
+    subdata$label[subdata[label_react] < quantile(subdata[[label_react]], 0.25)] <- "undervalued"
   }
 
   
