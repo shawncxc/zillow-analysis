@@ -68,10 +68,18 @@ PreprocesData <- function()
   data_sf$finishedSqFt[data_sf$finishedSqFt == "UNKNOWN"] <- NA
   data_sf$finishedSqFt <- as.numeric(data_sf$finishedSqFt)
   data_sf$perSqFtPrice <- data_sf$price / data_sf$finishedSqFt
+  
+  # Price per sqrt
   perSqFtPrice <- data_sf[!is.na(data_sf$perSqFtPrice), c( "lon", "lat",
                                                            "bedrooms", "bathrooms",
                                                            'street', "city", "state", 
                                                            "zipcode", "perSqFtPrice")]
+                                                           
+  # Drop redundant columns
+  data_sf = data_sf[, c( "lon", "lat",
+                         "bedrooms", "bathrooms",
+                         'street', "city", "state", 
+                         "zipcode", "price", "label")]                                                         
   
   data_tot = list(data_sf = data_sf, perSqFtPrice = perSqFtPrice)
   
@@ -84,3 +92,28 @@ pal <- colorFactor(c("dimgrey", "red", "blue"),
                    domain = c("average", "overvalued", "undervalued"),
                    ordered = T)
 
+
+# New: 09/23/2016
+# House prices should be classified by subdata, label change interactively
+InteractLabel <- function(data, label_react, beds, baths)
+{
+  subdata <- SubDataFunc(data, beds, baths)
+  subdata <- na.omit(subdata)
+  
+  if(nrow(subdata) == 1)
+  {
+    subdata$label <- "average"
+  }
+  
+  else
+  {
+    subdata$label <- "overvalued"
+    
+    subdata$label[subdata[label_react] >= quantile(subdata[label_react], 0.25) & 
+                  subdata[label_react] <= quantile(subdata[label_react], 0.75)] <- "average"
+    subdata$label[subdata[label_react] < quantile(subdata[label_react], 0.25)] <- "undervalued"
+  }
+
+  
+  subdata
+}
