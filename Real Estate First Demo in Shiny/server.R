@@ -236,9 +236,11 @@ shinyServer(function(input, output) {
       if( !is.null(input$nBeds) && input$City2 == "San Francisco")
       {
         # Need to be modified: let control flow choose data interactively  
-        if(!is.null(ClassifiedPrice(data_sf, input$nBeds, input$nBaths)) && nrow(data_sf) != 0)
+        if(!is.null(ClassifiedPrice(data_sf, input$nBeds, input$nBaths)) && nrow(data_sf) != 0
+           && nrow(ClassifiedPrice(data_sf, input$nBeds, input$nBaths)) != 0)
         {
-          subdata <- SubDataFunc(data_sf, input$nBeds, input$nBaths)
+        
+          subdata <- InteractLabel(data_sf, "price", input$nBeds, input$nBaths)
           
           leaflet(subdata) %>%
             addTiles() %>%
