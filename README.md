@@ -75,8 +75,8 @@ I would prefer the qs method for this demo, because it is more interpretable.
 
 #### Second Demo
 * Visulize house price based on house type
-* Interactive responce the request from usera
-* Add popup for each house
+* Interactive responce the request from users
+* Add popup window for each house
 
 ### Pending 
 * Add summary tables for the boxplot
