@@ -91,6 +91,9 @@ shinyUI(navbarPage(
                                 uiOutput("notice2"),
                                 leafletOutput("classifiedPrice")
                                 br(),
+               
+                                verbatimTextOutput("summaryBedNBath"),
+                                br(),
                                 br()
                               )
                               
