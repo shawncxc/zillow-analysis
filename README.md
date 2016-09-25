@@ -83,4 +83,3 @@ I would prefer the qs method for this demo, because it is more interpretable.
 * Important: Seperate and visulize the data by per sqft or bedrooms/bathrooms. It depends on the quality of these columns. 
 * Deal with the NA or mistaken data in the bedrooms and bathrooms columns: One way is to assign the average value calculated from each category to those missing or mistaken one
 * Deal with no enough data
-* Second demo, Add data summary of each showing house type(text format or barplot)
