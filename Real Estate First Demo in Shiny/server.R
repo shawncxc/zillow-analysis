@@ -241,20 +241,32 @@ shinyServer(function(input, output) {
         {
         
           subdata <- InteractLabel(data_sf, "price", input$nBeds, input$nBaths)
+          if(!is.null(subdata_bedNbath))
+          {
+            leaflet(subdata_bedNbath) %>%
+              addTiles() %>%
+              addCircles(lng = ~lon, lat = ~lat,
+                         weight = 1, radius = 3,
+                         color =  ~pal(label), fillOpacity = 0.5,
+                         popup = ~paste(paste0("<b>Class: ",label, "</b>"),
+                                        paste0("<b>Price", ": $", price, "</b>"),
+                                        street, paste(city, state, zipcode),
+                                        sep = "<br/>")) %>%
+              addLegend("bottomright", pal = pal, values = ~label,
+                        title = "House Classification by House Type",
+                        opacity = 1)
+          }
           
-          leaflet(subdata) %>%
-            addTiles() %>%
-            addCircles(lng = ~lon, lat = ~lat,
-                       weight = 1, radius = 3,
-                       color =  ~pal(label), fillOpacity = 0.5,
-                       popup = ~paste(paste0("<b>Class: ",label, "</b>"),
-                                      paste0("<b>Price", ": $", price, "</b>"),
-                                      street, paste(city, state, zipcode),
-                                      sep = "<br/>")) %>%
-            addLegend("bottomright", pal = pal, values = ~label,
-                      title = "House Classification by House Type",
-                      opacity = 1)
-          
+          else
+          {
+            leaflet() %>%
+              addTiles() %>%  # Add default OpenStreetMap map tiles
+              addPopups(lng=-74.0265753, lat=40.7452317, popup =paste(sep = "<br/>",
+                                                                      "<b>No Data Available:</b>",
+                                                                      "<b>Please Try Again</b>"),
+                        options = popupOptions(closeButton = FALSE))
+          }
+
         }
         
         # No data available
@@ -266,8 +278,7 @@ shinyServer(function(input, output) {
                                                                     "<b>No Data Available:</b>",
                                                                     "<b>Please Try Again</b>"),
                       options = popupOptions(closeButton = FALSE))
-          
-        
+
         }
         
       }
@@ -280,8 +291,82 @@ shinyServer(function(input, output) {
       
     }
       
-    
-    
     })
+   
+    
+  # New 09/25/16
+  # Summary of output the categorical map by house type
+  output$summaryBedNBath <- renderPrint({
+
+    if( !is.null(input$nBeds) && input$City2 == "San Francisco")
+    {
+      # Need to be modified: let control flow choose data interactively  
+      if(!is.null(ClassifiedPrice(data_sf, input$nBeds, input$nBaths)) && nrow(data_sf) != 0
+         && nrow(ClassifiedPrice(data_sf, input$nBeds, input$nBaths)) != 0)
+      {
+        
+        # Need to be modified: It is not reactive
+        subdata_bedNbath <- InteractLabel(data_sf, "price", input$nBeds, input$nBaths)
+        
+        if(!is.null(subdata_bedNbath))
+        {
+          # Overall summary
+          cat("Overall Price Summary:")
+          cat("\n")
+          cat("\n")
+          cat(paste0("Total Number of ", input$nBeds,"Beds & ", input$nBaths, 
+                     "Baths Houses: ", nrow(subdata_bedNbath)))
+          cat("\n")
+          cat("Overall Price Range(USD): ")
+          temp <- summary(subdata_bedNbath$price)
+          cat(paste0("Min: $", temp[1], "  Median: $", temp[3],
+                     "  Mean: $", temp[4], "  Max: $", temp[6]))
+          cat("\n")
+          cat("\n")
+          cat("\n")
+
+          # House price summary by house type
+          cat("Price Summary by House Value(USD):")
+          cat("\n")
+          cat("\n")
+          
+          cat(paste0("            ", "Number of Houses  ",
+                     "   Min   ", "   Median   ",
+                     "    Mean    ", "     Max"))
+          cat("\n")
+          
+          #unique_type <- length(unique(subdata_bedNbath$label))
+          unique_type <- unique(subdata_bedNbath$label)
+          for(htype in unique_type)
+          {
+            htype_summ <- summary(subdata_bedNbath$price[subdata_bedNbath$label == htype])
+            cat(paste0(htype, "         ", sum(subdata_bedNbath$label == htype),
+                       "          ", htype_summ[1], "     ", htype_summ[3], "     ", htype_summ[4],
+                       "     ", htype_summ[6]))
+            cat("\n")
+          }
+          
+        }
+        
+        else
+        {
+          cat("No Price Information")
+        }
+      
+      }
+
+      # No data available
+      else 
+      {
+        cat("No Price Information")
+      }
+      
+    }
+    
+    else
+    {
+      cat("No Price Information")
+    }
+
     
 })
