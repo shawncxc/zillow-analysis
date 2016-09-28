@@ -157,7 +157,7 @@ shinyServer(function(input, output) {
                                   street, paste(city, state, zipcode), 
                                   sep = "<br/>")) %>%
         addLegend("bottomright", color = c( "dimgrey", "red", "blue"),
-                  title = "House Location by Per Sqft Price",
+                  title = "House Classification by Per Sqft Price",
                   labels = c("average", "overvalued", "undervalued"),
                   opacity = 1)
       
