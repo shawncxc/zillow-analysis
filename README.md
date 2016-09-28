@@ -71,7 +71,7 @@ I would prefer the qs method for this demo, because it is more interpretable.
 * Visulize a part of house prices in SF
 * Categorize data into three parts in spite of the types of houses
 * Visulize data for each part(average, undervalue and overvalue for per sqft and total price)
-* Add popup for each house
+* Add popup window for each house
 
 #### Second Demo
 * Visulize house price based on house type
