@@ -75,7 +75,7 @@ I would prefer the qs method for this demo, because it is more interpretable.
 
 #### Second Demo
 * Visulize house price based on house type
-* Interactive responce the request from users
+* Interactively respond the request from users
 * Add popup window for each house
 * Seperate and visulize the data by bedrooms/bathrooms
 
