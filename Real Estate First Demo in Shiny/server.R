@@ -136,20 +136,23 @@ shinyServer(function(input, output) {
         addTiles() %>%
         addCircles(data=perSqFtPrice[perSqFtPrice$perSqFtPrice > quantile(perSqFtPrice$perSqFtPrice, 0.75), ], 
                    lng = ~lon, lat = ~lat, weight = 1, radius = 3, color = "red", fillOpacity = 0.5,
-                   popup = ~paste(paste0("<b>Sqft Price", ": $", round(perSqFtPrice), "</b>"),
+                   popup = ~paste(paste0("<b>Class: overvalued</b>"),
+                                  paste0("<b>Sqft Price", ": $", round(perSqFtPrice), "</b>"),
                                   paste0("Beds: ", bedrooms, " Baths: ", bathrooms),
                                   street, paste(city, state, zipcode), 
                                   sep = "<br/>"))%>%
         addCircles(data=perSqFtPrice[perSqFtPrice$perSqFtPrice >= quantile(perSqFtPrice$perSqFtPrice, 0.25)
                                      & perSqFtPrice$perSqFtPrice <= quantile(perSqFtPrice$perSqFtPrice, 0.75), ],
                    lng = ~lon, lat = ~lat, weight = 1, radius = 3, color = "dimgrey", fillOpacity = 0.5,
-                   popup = ~paste(paste0("<b>Sqft Price", ": $", round(perSqFtPrice), "</b>"),
+                   popup = ~paste(paste0("<b>Class: average</b>"),
+                                  paste0("<b>Sqft Price", ": $", round(perSqFtPrice), "</b>"),
                                   paste0("Beds: ", bedrooms, " Baths: ", bathrooms),
                                   street, paste(city, state, zipcode), 
                                   sep = "<br/>"))%>%
         addCircles(data=perSqFtPrice[perSqFtPrice$perSqFtPrice < quantile(perSqFtPrice$perSqFtPrice, 0.25), ], 
                    lng = ~lon, lat = ~lat, weight = 1, radius = 3, color = "blue", fillOpacity = 0.5,
-                   popup = ~paste(paste0("<b>Sqft Price", ": $", round(perSqFtPrice), "</b>"),
+                   popup = ~paste(paste0("<b>Class: undervalued</b>"),
+                                  paste0("<b>Sqft Price", ": $", round(perSqFtPrice), "</b>"),
                                   paste0("Beds: ", bedrooms, " Baths: ", bathrooms),
                                   street, paste(city, state, zipcode), 
                                   sep = "<br/>")) %>%
