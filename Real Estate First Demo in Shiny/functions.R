@@ -101,7 +101,6 @@ PreprocesData <- function()
   # Remove price NA rows
   data_sf <- data_sf[!is.na(data_sf$price), ]
   
-  
   # Seperate 3 data sets: overvalued, average, undervalued
   data_sf <- data_sf[order(data_sf$price, decreasing = F), ]
   
@@ -109,7 +108,6 @@ PreprocesData <- function()
   data_sf$label[data_sf$price >= quantile(data_sf$price, 0.25) & 
                   data_sf$price <= quantile(data_sf$price, 0.75)] <- "average"
   data_sf$label[data_sf$price < quantile(data_sf$price, 0.25)] <- "undervalued"
-  
   
   # New: 09/01/2016
   # Calculate per sqft price for house, without unknown data
