@@ -72,6 +72,7 @@ I would prefer the qs method for this demo, because it is more interpretable.
 * Categorize data into three parts in spite of the types of houses
 * Visulize data for each part(average, undervalue and overvalue for per sqft and total prices)
 * Add popup window for each house
+* Deal with the missing data in the price column: assign the average value calculated from each category to those missing values
 
 #### Second Demo
 * Visulize house prices based on house types
@@ -81,5 +82,4 @@ I would prefer the qs method for this demo, because it is more interpretable.
 
 ### Pending 
 * Add summary tables for the boxplot
-* Deal with the NA or mistaken data in the bedrooms and bathrooms columns: One way is to assign the average value calculated from each category to those missing or mistaken one
 * To be continued...
