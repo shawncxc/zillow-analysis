@@ -34,6 +34,10 @@ PreprocesData <- function()
   #Imoort data
   data_sf <- read.csv("result_deleted_redundant_columns.csv", stringsAsFactors=FALSE)
   
+  # New: 09/01/2016
+  # Remove duplicated rows
+  data_sf <- data_sf[!duplicated(data_sf$zpid), ]
+  
   # Munge data
   temp <- gsub("[\"\\[\\]]*", "", data_sf$latlon)
   temp <- unlist(strsplit(temp, ",", fixed = T))
@@ -48,11 +52,55 @@ PreprocesData <- function()
   # Obtain numeric price
   data_sf$price <- gsub(",", "", data_sf$price)
   data_sf$price <- as.numeric(data_sf$price)
+
+  # Drop redundant columns
+  data_sf <- data_sf[, c('zpid', "lon", "lat",
+                         "bedrooms", "bathrooms",
+                         'street', "city", "state", 
+                         "zipcode", "price", "finishedSqFt")]
+  
+  # New: 10/7/2016
+  # Deal with the NA in price 
+  # Assign the average value calculated from each category to those missing data
+  CompeleteData <- function(temp)
+  {
+    if(temp[4] != 'UNKNOWN' && temp[5] != 'UNKNOWN')
+    {
+      temp[10] <- with(data_sf, mean(price[bedrooms == temp[4] & bathrooms == temp[5]], na.rm = T))
+    }
+    
+    else if(temp[4] == 'UNKNOWN' && temp[5] != 'UNKNOWN')
+    {
+      
+      temp[10] <- with(data_sf, mean(price[bathrooms == temp[5]], na.rm = T))
+      
+    }
+    else
+    {
+      
+      temp[10] <- with(data_sf, mean(price[bedrooms == temp[4]], na.rm = T))
+    }
+    
+    temp
+  }
+  
+  missing_data <- subset(data_sf, subset = is.na(price))
+  missing_data <- subset(missing_data, subset = bedrooms != 'UNKNOWN' | bathrooms != 'UNKNOWN')
+  
+  good_data <- apply(missing_data, MARGIN = 1, FUN = CompeleteData)
+  
+  good_data <- as.data.frame(t(good_data))
+  
+  # Convert zpid to numeric instead of character, because there have spaces in the zpid
+  good_data$zpid <- as.numeric(levels(good_data$zpid))[good_data$zpid]
+  
+  data_sf$price[data_sf$zpid %in% good_data$zpid] <- as.character(good_data$price)
+  
+  data_sf$price <- as.numeric(data_sf$price)
+
+  # Remove price NA rows
   data_sf <- data_sf[!is.na(data_sf$price), ]
   
-  # New: 09/01/2016
-  # Remove duplicated row s
-  data_sf <- data_sf[!duplicated(data_sf$zpid), ]
   
   # Seperate 3 data sets: overvalued, average, undervalued
   data_sf <- data_sf[order(data_sf$price, decreasing = F), ]
@@ -68,19 +116,13 @@ PreprocesData <- function()
   data_sf$finishedSqFt[data_sf$finishedSqFt == "UNKNOWN"] <- NA
   data_sf$finishedSqFt <- as.numeric(data_sf$finishedSqFt)
   data_sf$perSqFtPrice <- data_sf$price / data_sf$finishedSqFt
-  
+
   # Price per sqrt
-  perSqFtPrice <- data_sf[!is.na(data_sf$perSqFtPrice), c( "lon", "lat",
+  perSqFtPrice <- data_sf[!is.na(data_sf$perSqFtPrice), c('zpid', "lon", "lat",
                                                            "bedrooms", "bathrooms",
                                                            'street', "city", "state", 
                                                            "zipcode", "perSqFtPrice")]
-                                                           
-  # Drop redundant columns
-  data_sf = data_sf[, c( "lon", "lat",
-                         "bedrooms", "bathrooms",
-                         'street', "city", "state", 
-                         "zipcode", "price", "label")]                                                         
-  
+
   data_tot = list(data_sf = data_sf, perSqFtPrice = perSqFtPrice)
   
   data_tot
