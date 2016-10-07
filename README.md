@@ -82,4 +82,4 @@ I would prefer the qs method for this demo, because it is more interpretable.
 ### Pending 
 * Add summary tables for the boxplot
 * Deal with the NA or mistaken data in the bedrooms and bathrooms columns: One way is to assign the average value calculated from each category to those missing or mistaken one
-* Deal with not enough data
+
