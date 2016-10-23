@@ -82,4 +82,5 @@ I would prefer the qs method for this demo, because it is more interpretable.
 
 ### Pending 
 * Add summary tables for the boxplot
+* Histogram in second Demo label colors are not consistant to the precious charts, and the font is too small
 * To be continued...
