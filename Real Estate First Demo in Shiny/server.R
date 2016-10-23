@@ -7,6 +7,7 @@
 
 library(shiny)
 library(leaflet)
+library(ggplot2)
 source("functions.R")
 
 test <- PreprocesData()
@@ -373,3 +374,38 @@ shinyServer(function(input, output) {
 
     
 })
+    
+    
+    
+  # New 10/23/16
+  # Output histogram of the categorical map by house type
+  output$histogram <- renderPlot({
+
+    if( !is.null(input$nBeds) && input$City2 == "San Francisco")
+    {
+      # Need to be modified: let control flow choose data interactively  
+      if(!is.null(ClassifiedPrice(data_sf, input$nBeds, input$nBaths)) && nrow(data_sf) != 0
+         && nrow(ClassifiedPrice(data_sf, input$nBeds, input$nBaths)) != 0)
+      {
+        subdata_bedNbath <- InteractLabel(data_sf, "price", input$nBeds, input$nBaths)
+        
+        if(!is.null(subdata_bedNbath))
+        {
+          ggplot(subdata_bedNbath, aes(x = price/100000, group = label, fill = label)) + 
+            geom_histogram(binwidth = 1) +
+            xlab("Price / 100,000") + 
+            ylab("Number of House")
+
+        }
+        
+      }
+      
+    }
+
+  })
+
+
+  
+})    
+    
+    
