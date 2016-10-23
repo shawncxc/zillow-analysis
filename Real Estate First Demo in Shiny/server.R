@@ -393,8 +393,9 @@ shinyServer(function(input, output) {
         {
           ggplot(subdata_bedNbath, aes(x = price/100000, group = label, fill = label)) + 
             geom_histogram(binwidth = 1) +
-            xlab("Price / 100,000") + 
-            ylab("Number of House")
+            ggtitle("Price Distribution") +
+            labs(x="Price / 100,000 (USD)", y="Number of House") + 
+            theme(text = element_text(size = 18))
 
         }
         
@@ -403,7 +404,6 @@ shinyServer(function(input, output) {
     }
 
   })
-
 
   
 })    
