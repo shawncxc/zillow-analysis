@@ -391,12 +391,20 @@ shinyServer(function(input, output) {
         
         if(!is.null(subdata_bedNbath))
         {
-          ggplot(subdata_bedNbath, aes(x = price/100000, group = label, fill = label)) + 
+          # By manually specifying the levels in the factor, you can control
+          # the stacking order of the associated fill colors.
+          Class = factor(as.character(subdata_bedNbath$label), 
+                          levels=c("undervalued", "average","overvalued"))
+          
+          # Create a named character vector that relates factor levels to colors.
+          grays = c("average" = "dimgrey","overvalued" = "red","undervalued" = "blue")
+          
+          ggplot(subdata_bedNbath, aes(x = price/100000, fill = Class)) + 
             geom_histogram(binwidth = 1) +
             ggtitle("Price Distribution") +
-            labs(x="Price / 100,000 (USD)", y="Number of House") + 
+            labs(x="Price / 100,000 (USD)", y="Number of Houses") + 
+            scale_fill_manual(values=grays)+
             theme(text = element_text(size = 18))
-
         }
         
       }
