@@ -62,7 +62,7 @@ Should I use one standard deviation (sd) method or quantile segmentation (qs)?
 *q - quantile
 
 This demo performs exploratory data analysis.
-I would prefer the qs method for this demo, because it is more interpretable.
+I would prefer the qs method for this demo, because it is more interpretable...
 
 
 
